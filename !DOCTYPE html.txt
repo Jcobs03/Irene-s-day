@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Birthday VIP Card 🚀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Particle Canvas Background */
+        #canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Floating Audio Control Toggle */
+        #music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #music-control:hover {
+            transform: scale(1.08);
+            background: rgba(253, 121, 168, 0.4);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 35px 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 440px;
+            max-width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(45deg, #ff7675, #fd79a8, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 38px;
+        }
+
+        p {
+            color: #dfe6e9;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        input::placeholder { color: #ccc; }
+        input:focus { border-color: #fd79a8; box-shadow: 0 0 10px rgba(253, 121, 168, 0.5); }
+
+        button {
+            background: linear-gradient(45deg, #ff7675, #d63031);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 4px;
+        }
+
+        button:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(214, 48, 49, 0.6);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Age Selection Dynamic Grid */
+        .age-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 280px;
+            margin-top: 10px;
+        }
+
+        .age-btn {
+            width: 120px;
+        }
+
+        .runaway {
+            position: absolute !important;
+            transition: all 0.15s ease-out;
+        }
+
+        /* Timeline Counter Style */
+        .counter-display {
+            font-size: 55px;
+            font-weight: 800;
+            color: #fd79a8;
+            text-shadow: 0 0 20px rgba(253, 121, 168, 0.8);
+            margin: 15px 0;
+        }
+
+        .badge-list {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bible-verse {
+            font-style: italic;
+            color: #a29bfe;
+            font-size: 14px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(162, 155, 254, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body onclick="tryStartMusic()" ontouchstart="tryStartMusic()">
+
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Floating Audio Control Toggle -->
+    <button id="music-control" class="hidden" onclick="toggleMusic(event)">🎵 Music: On</button>
+
+    <!-- Hidden HTML5 Audio Player for Chella - Pretty Nun (Instrumental) -->
+    <audio id="bg-music" loop>
+        <source id="music-source" src="pretty-nun.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- SCREEN 1: VIP ACCESS / LOGIN -->
+    <div id="screen1" class="card">
+        <h1>VIP BIRTHDAY ACCESS 👑</h1>
+        <p>Welcome, <strong style="color: #fd79a8;" id="display-name">Irene</strong>! Enter your secret key to unlock your experience:</p>
+        <input type="password" id="pass-input" placeholder="Enter Secret Code" onfocus="tryStartMusic()">
+        <button onclick="checkPassword()">Unlock Experience 🚀</button>
+        <p id="error-msg" style="color: #ff7675; margin-top: 10px; font-size: 14px;" class="hidden">⚠️ Invalid Key! Try again.</p>
+    </div>
+
+    <!-- SCREEN 2: INTERACTIVE ORIGIN CHOICE -->
+    <div id="screen2" class="card hidden">
+        <h2>Where did your journey begin? 🧬</h2>
+        <p>Choose your official starting point:</p>
+        <div class="age-container" id="age-box">
+            <!-- Correct Option (Stays Fixed) -->
+            <button class="age-btn" onclick="startCounterExperience()">1 year</button>
+
+            <!-- Runaway / Dodging Options -->
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">🧬 Sperm</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">2 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">5 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">10 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">18 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">20 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">25 years</button>
+            <button class="age-btn runaway" onmouseover="moveButton(this)" onclick="moveButton(this)">Old enough</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: TIMELINE COUNTING SEQUENCE -->
+    <div id="screen3" class="card hidden">
+        <h2>Counting Your Growth... ⏳</h2>
+        <div class="counter-display" id="age-counter">0</div>
+        <p id="counter-status">Initializing growth sequence...</p>
+        <button id="counter-next-btn" class="hidden" onclick="goToBirthdayWish()">Explore Destiny ✨</button>
+    </div>
+
+    <!-- SCREEN 4: BIRTHDAY WISH & SCRIPTURE -->
+    <div id="screen4" class="card hidden">
+        <h2>🎉 HAPPY BIRTHDAY, IRENE! 🎉</h2>
+        <div class="bible-verse">
+            "Before I formed you in the womb I knew you, before you were born I set you apart." — Jeremiah 1:5
+        </div>
+        <p>From early development up to this day, your journey has been nothing short of extraordinary. Thank you for being such an amazing, genuine, and loyal best friend!</p>
+        
+        <div class="badge-list">
+            <span class="badge">👑 Day One Legend</span>
+            <span class="badge">🔥 Pure Loyalty</span>
+            <span class="badge">✨ Queen of Good Vibes</span>
+        </div>
+
+        <button onclick="goToCelebration()">Next Surprise 🎁</button>
+    </div>
+
+    <!-- SCREEN 5: BEST FRIEND TRIBUTE & FINAL QUESTION -->
+    <div id="screen5" class="card hidden">
+        <h2>🏆 Official Bestie Award 🏆</h2>
+        <p>Having an incredible best friend like you makes life 100x better. Are you ready to conquer this year and make it your biggest season of wins yet?</p>
+        <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <button onclick="finalPopup('Yes! Let\'s conquer the world together! 🚀🔥')">Yes, 100%! 🚀</button>
+            <button onclick="finalPopup('Built for greatness! Let\'s make history! 💪⚡')">Always Ready! 🔥</button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const SECRET_PASSWORD = "Abhujubhuju"; 
+        const RECIPIENT_NAME = "Irene";  
+
+        document.getElementById('display-name').innerText = RECIPIENT_NAME;
+
+        // Music Player Autoplay & Toggle Logic
+        const bgMusic = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
+        let isPlaying = false;
+        let musicStarted = false;
+
+        function tryStartMusic() {
+            if (!musicStarted) {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicStarted = true;
+                    musicBtn.classList.remove('hidden');
+                    musicBtn.innerText = "🎵 Music: On";
+                }).catch(err => {
+                    // Autoplay deferred until user interaction
+                });
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation();
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                musicBtn.innerText = "🔇 Music: Off";
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+                musicBtn.innerText = "🎵 Music: On";
+            }
+        }
+
+        // Sound Effects via Web Audio API
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep(freq = 440, type = 'sine', duration = 0.1) {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        // Screen 1: Password Check
+        function checkPassword() {
+            playBeep(600, 'triangle', 0.15);
+            const entered = document.getElementById('pass-input').value;
+            if (entered === SECRET_PASSWORD) {
+                switchScreen('screen1', 'screen2');
+                initRunawayButtons();
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+                playBeep(200, 'sawtooth', 0.3);
+            }
+        }
+
+        function switchScreen(from, to) {
+            document.getElementById(from).classList.add('hidden');
+            document.getElementById(to).classList.remove('hidden');
+        }
+
+        // Initialize positions for all runaway buttons in Screen 2
+        function initRunawayButtons() {
+            const runaways = document.querySelectorAll('.runaway');
+            runaways.forEach(btn => {
+                moveButton(btn);
+            });
+        }
+
+        // Screen 2: Dodge Logic for all runaway buttons
+        function moveButton(btn) {
+            playBeep(800, 'sine', 0.05);
+            const container = document.getElementById('age-box');
+            const maxX = container.clientWidth - btn.clientWidth;
+            const maxY = container.clientHeight - btn.clientHeight;
+
+            const newX = Math.max(0, Math.floor(Math.random() * maxX));
+            const newY = Math.max(0, Math.floor(Math.random() * maxY));
+
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.transform = 'none';
+        }
+
+        // Screen 3: Interactive Animated Counter
+        function startCounterExperience() {
+            playBeep(523, 'sine', 0.2);
+            switchScreen('screen2', 'screen3');
+            
+            let count = 0;
+            const counterElem = document.getElementById('age-counter');
+            const statusElem = document.getElementById('counter-status');
+            
+            const interval = setInterval(() => {
+                count++;
+                counterElem.innerText = count;
+                playBeep(300 + count * 25, 'sine', 0.05);
+
+                if(count <= 5) statusElem.innerText = "Early stages & childhood blessings... 🍼";
+                else if(count <= 12) statusElem.innerText = "Growing up & building character... ⚡";
+                else if(count <= 18) statusElem.innerText = "Teenage years & epic memories... 🔥";
+                else if(count === 20) statusElem.innerText = "Reaching age 20 milestone! 🎂";
+                else if(count === 25) {
+                    clearInterval(interval);
+                    statusElem.innerText = "✨ AGE 25 & BEYOND UNLOCKED! ✨";
+                    document.getElementById('counter-next-btn').classList.remove('hidden');
+                    triggerConfetti();
+                    playBeep(880, 'triangle', 0.4);
+                }
+            }, 160);
+        }
+
+        function goToBirthdayWish() {
+            playBeep(600, 'sine', 0.2);
+            switchScreen('screen3', 'screen4');
+            triggerConfetti();
+        }
+
+        function goToCelebration() {
+            playBeep(700, 'sine', 0.2);
+            switchScreen('screen4', 'screen5');
+        }
+
+        function finalPopup(msg) {
+            playBeep(900, 'triangle', 0.5);
+            triggerConfetti();
+            alert("🔥 BEST FRIEND CONFIRMED 🔥\n\n" + msg + "\n\nHappy Birthday, Irene!");
+        }
+
+        // Ambient Particle Background
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for(let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                dx: (Math.random() - 0.5) * 0.8,
+                dy: (Math.random() - 0.5) * 0.8
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(253, 121, 168, 0.6)';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+                if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Confetti Burst Generator
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const cCtx = confettiCanvas.getContext('2d');
+        let confettiPieces = [];
+
+        function triggerConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            const colors = ['#ff7675', '#fd79a8', '#a29bfe', '#ffeaa7', '#55efc4'];
+            for (let i = 0; i < 80; i++) {
+                confettiPieces.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12 - 4,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 100
+                });
+            }
+        }
+
+        function animateConfetti() {
+            cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiPieces.forEach((p, index) => {
+                cCtx.fillStyle = p.color;
+                cCtx.fillRect(p.x, p.y, p.size, p.size);
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2;
+                p.life--;
+                if(p.life <= 0) confettiPieces.splice(index, 1);
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+        animateConfetti();
+    </script>
+</body>
+</html>
